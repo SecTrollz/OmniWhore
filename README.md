@@ -1,5 +1,3 @@
-# OmniWhore
-
 # OmniView — Asset Intelligence
 
 **A self-contained, cryptographically verified asset ledger in a single HTML file.**
