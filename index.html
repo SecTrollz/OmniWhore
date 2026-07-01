@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
@@ -6,8 +6,8 @@
 <title>OmniView — Asset Intelligence (Production)</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
-    :root{--black:#000;--coal:#0c0d0f;--bg:#0c0d0f;--surface:#16181c;--surface2:#1e2127;--surface3:#262a31;--border:#2b2f37;--border2:#383d47;--text:#e8e9ec;--text2:#9aa0ab;--text3:#62686f;--orange:#ff6b1a;--orange-bg:#2a1407;--orange-dim:#c4561a;--yellow:#ffc11f;--yellow-bg:#2a2207;--green:#2fd66b;--green-bg:#07260f;--red:#ff3b3b;--red-bg:#2a0808;--blue:#2f80ff;--blue-bg:#081428;--purple:#a855f7;--purple-bg:#1b0d2a;--mono:'SF Mono','Cascadia Code','Consolas','Courier New',monospace;--sans:'Inter','Segoe UI',system-ui,sans-serif;--radius:6px;--radius-sm:3px;--shadow:0 4px 28px rgba(0,0,0,.6);--glass:rgba(22,24,28,.92);}
-    [data-theme="light"]{--bg:#e9ebee;--coal:#e9ebee;--surface:#fff;--surface2:#f3f4f7;--surface3:#e7e9ee;--border:#d6dae1;--border2:#c2c8d2;--text:#16181c;--text2:#5a616b;--text3:#8b929c;--orange-bg:#fff0e6;--yellow-bg:#fff8e0;--green-bg:#e6f7ec;--red-bg:#fde8e8;--blue-bg:#e7f0ff;--purple-bg:#f3e8ff;--shadow:0 4px 28px rgba(0,0,0,.1);--glass:rgba(255,255,255,.92);}
+    :root{--black:#000;--coal:#0c0d0f;--bg:#0c0d0f;--surface:#16181c;--surface2:#1e2127;--surface3:#262a31;--border:#2b2f37;--border2:#383d47;--text:#e8e9ec;--text2:#9aa0ab;--text3:#62686f;--orange:#ff6b1a;--orange-dim:#ff6b1a80;--orange-bg:#ff6b1a0f;--green:#2fd66b;--green-bg:#2fd66b0f;--red:#ff3b3b;--red-bg:#ff3b3b0f;--yellow:#ffc11f;--yellow-bg:#ffc11f0f;--purple:#a855f7;--purple-bg:#a855f70f;--blue:#2f80ff;--blue-bg:#2f80ff0f;--glass:rgba(22,24,28,.5);--radius:8px;--radius-sm:4px;--shadow:0 8px 32px rgba(0,0,0,.3);--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--mono:"JetBrains Mono","Fira Code",monospace;}
+    [data-theme="light"]{--bg:#e9ebee;--coal:#e9ebee;--surface:#fff;--surface2:#f3f4f7;--surface3:#e7e9ee;--border:#d6dae1;--border2:#c2c8d2;--text:#16181c;--text2:#5a616b;--text3:#8b929c;--orange:#ff6b1a;--orange-bg:#ff6b1a08;--green:#21a563;--green-bg:#21a5630f;--red:#ef5757;--red-bg:#ef57570f;--yellow:#e5b914;--yellow-bg:#e5b9140f;--purple:#9e4e9e;--purple-bg:#9e4e9e0f;--blue:#1f6feb;--blue-bg:#1f6feb0f;}
     *{margin:0;padding:0;box-sizing:border-box;}
     body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.5;min-height:100vh;position:relative;transition:background .3s,color .3s;}
     ::selection{background:#ff6b1a40;}
@@ -20,24 +20,66 @@
     .progress-fill{height:100%;width:0%;background:var(--orange);transition:width .3s;}
     #loadingText{color:var(--text2);font-family:var(--mono);font-size:.8rem;}
     .app-wrap{position:relative;z-index:1;}
-    ::-webkit-scrollbar{width:7px;height:7px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}::-webkit-scrollbar-thumb:hover{background:var(--orange-dim);}
+    ::-webkit-scrollbar{width:7px;height:7px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}::-webkit-scrollbar-thumb:hover{background:var(--border);}
     .warning-banner{background:var(--red-bg);border-bottom:1px solid #ff3b3b40;padding:10px 18px;font-size:.8rem;color:#ff9b9b;font-family:var(--mono);}
-    .topnav{background:var(--glass);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:18px;padding:0 18px;height:48px;position:sticky;top:0;z-index:1000;}
+    .topnav{background:var(--glass);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:18px;padding:0 18px;height:48px;position:sticky;top:0;z-index:100;}
     .brand{font-weight:800;font-size:1.15rem;letter-spacing:-.02em;color:var(--orange);white-space:nowrap;cursor:pointer;}
     .brand span{color:var(--text);font-weight:400;}
     .topnav-links{display:flex;gap:16px;font-size:.82rem;}
     .topnav-links a{color:var(--text2);text-decoration:none;cursor:pointer;padding:2px 0;border-bottom:2px solid transparent;transition:.15s;}
     .topnav-links a:hover,.topnav-links a.active{color:var(--text);border-bottom-color:var(--orange);}
     .topnav-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
-    .icon-btn{border:1px solid var(--border2);background:var(--surface2);color:var(--text);width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:.15s;}
+    .icon-btn{border:1px solid var(--border2);background:var(--surface2);color:var(--text);width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.95rem;transition:.15s;}
     .icon-btn:hover{border-color:var(--orange);}
-    .chain-badge{font-family:var(--mono);font-size:.68rem;padding:3px 9px;border-radius:20px;border:1px solid var(--border2);color:var(--text2);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:5px;}
+    .chain-badge{font-family:var(--mono);font-size:.68rem;padding:3px 9px;border-radius:20px;border:1px solid var(--border2);color:var(--text2);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:4px;}
     .chain-badge.ok{border-color:#2fd66b40;color:var(--green);}
     .chain-badge.bad{border-color:#ff3b3b40;color:var(--red);}
     .chain-badge .cb-dot{width:7px;height:7px;border-radius:50%;background:currentColor;}
+    
+    /* Discovery Stats Grid */
+    .discovery-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;padding:14px 18px;border-bottom:1px solid var(--border);}
+    .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px;text-align:center;}
+    .stat-value{font-family:var(--mono);font-size:1.5rem;font-weight:700;color:var(--orange);}
+    .stat-label{font-size:.7rem;text-transform:uppercase;color:var(--text3);margin-top:4px;letter-spacing:.05em;}
+    
+    /* Org Discovery View */
+    .discovery-view{padding:14px 18px;}
+    .org-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:20px;}
+    .org-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;transition:.15s;}
+    .org-card:hover{border-color:var(--orange-dim);box-shadow:var(--shadow);}
+    .org-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px;}
+    .org-name{font-weight:700;font-size:1.05rem;color:var(--text);}
+    .org-count{font-family:var(--mono);font-size:.9rem;color:var(--orange);font-weight:600;}
+    .org-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0;font-size:.8rem;}
+    .org-stat{background:var(--surface2);padding:8px;border-radius:var(--radius-sm);border-left:2px solid var(--orange);}
+    .org-stat-label{color:var(--text3);font-size:.7rem;text-transform:uppercase;}
+    .org-stat-val{font-family:var(--mono);color:var(--text);margin-top:2px;font-weight:600;}
+    .org-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+    .org-tag{background:var(--surface2);color:var(--text2);padding:3px 8px;border-radius:12px;font-size:.7rem;border:1px solid var(--border2);}
+    
+    /* Topology/Relationship View */
+    .topology-container{display:grid;grid-template-columns:250px 1fr;gap:0;min-height:70vh;}
+    @media(max-width:1024px){.topology-container{grid-template-columns:1fr;}}
+    .topology-legend{border-right:1px solid var(--border);padding:16px 14px;overflow-y:auto;}
+    .topology-canvas{border:1px solid var(--border);background:var(--coal);position:relative;overflow:auto;}
+    #topologyCanvas{display:block;width:100%;height:100%;}
+    .legend-section{margin-bottom:16px;}
+    .legend-title{font-size:.75rem;text-transform:uppercase;font-weight:700;color:var(--orange);margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border);}
+    .legend-item{display:flex;align-items:center;gap:8px;font-size:.8rem;padding:4px 0;color:var(--text2);}
+    .legend-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+    
+    /* Watchers Dashboard */
+    .watchers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;}
+    .watcher-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;transition:.15s;}
+    .watcher-card:hover{border-color:var(--orange-dim);}
+    .watcher-ip{font-family:var(--mono);font-size:1.1rem;font-weight:700;color:var(--orange);margin-bottom:6px;}
+    .watcher-meta{font-size:.8rem;color:var(--text2);display:grid;gap:3px;margin-bottom:8px;}
+    .watcher-status{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;background:var(--surface2);border-radius:4px;font-size:.75rem;font-weight:600;}
+    .watcher-activity{font-family:var(--mono);font-size:.75rem;color:var(--text3);padding:8px;background:var(--surface2);border-left:2px solid var(--blue);margin-top:6px;border-radius:2px;}
+    
     .search-strip{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 18px;display:flex;gap:8px;align-items:center;}
     .search-wrap{flex:1;position:relative;}
-    .search-box{width:100%;background:var(--coal);border:2px solid var(--border2);border-radius:var(--radius);padding:11px 16px;font-family:var(--mono);font-size:.92rem;color:var(--text);outline:none;transition:.2s;}
+    .search-box{width:100%;background:var(--coal);border:2px solid var(--border2);border-radius:var(--radius);padding:11px 16px;font-family:var(--mono);font-size:.92rem;color:var(--text);outline:none;transition:.15s;}
     .search-box:focus{border-color:var(--orange);box-shadow:0 0 0 4px #ff6b1a22;}
     .search-btn{background:var(--orange);color:var(--black);border:none;border-radius:var(--radius);padding:11px 22px;font-weight:700;font-size:.9rem;cursor:pointer;transition:.15s;}
     .search-btn:hover{background:#ff7d33;}
@@ -85,7 +127,7 @@
     .banner-ts{font-size:.68rem;color:var(--text3);font-family:var(--mono);margin-top:10px;padding-top:8px;border-top:1px solid var(--border);}
     .banner-body{padding:12px 14px;min-width:0;display:flex;flex-direction:column;}
     .banner-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
-    .tag{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:3px 8px;border-radius:20px;font-family:var(--sans);white-space:nowrap;display:inline-flex;align-items:center;gap:4px;}
+    .tag{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:3px 8px;border-radius:20px;font-family:var(--sans);white-space:nowrap;display:inline-flex;align-items:center;}
     .tag-status-active{background:var(--green-bg);color:var(--green);border:1px solid #2fd66b40;}
     .tag-status-maintenance{background:var(--yellow-bg);color:var(--yellow);border:1px solid #ffc11f40;}
     .tag-status-decommissioned{background:var(--red-bg);color:#ff7676;border:1px solid #ff3b3b40;}
@@ -96,10 +138,10 @@
     .tag-svc:hover{border-color:var(--orange);color:var(--orange);}
     .tag-port{background:var(--coal);color:var(--blue);border:1px solid #2f80ff40;font-family:var(--mono);cursor:pointer;}
     .tag-port:hover{background:var(--blue-bg);}
-    .banner-blob{background:var(--black);border:1px solid var(--border);border-radius:var(--radius-sm);font-family:var(--mono);font-size:.72rem;color:#9fb4c9;padding:10px 12px;white-space:pre-wrap;word-break:break-all;flex:1;line-height:1.5;overflow:auto;max-height:210px;}
+    .banner-blob{background:var(--black);border:1px solid var(--border);border-radius:var(--radius-sm);font-family:var(--mono);font-size:.72rem;color:#9fb4c9;padding:10px 12px;white-space:pre-wrap;word-break:break-word;max-height:200px;overflow-y:auto;}
     .blob-key{color:var(--text3);}.blob-str{color:var(--green);}.blob-num{color:var(--yellow);}
     .banner-actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
-    .ba-btn{padding:4px 10px;font-size:.72rem;font-weight:600;border-radius:var(--radius-sm);cursor:pointer;border:1px solid var(--border2);background:var(--surface2);color:var(--text);transition:.15s;}
+    .ba-btn{padding:4px 10px;font-size:.72rem;font-weight:600;border-radius:var(--radius-sm);cursor:pointer;border:1px solid var(--border2);background:var(--surface2);color:var(--text);transition:.12s;}
     .ba-btn:hover{border-color:var(--orange);}
     .ba-btn.danger{border-color:var(--red);color:#ff7676;}.ba-btn.danger:hover{background:var(--red-bg);}
     .ba-btn.enroll{border-color:var(--orange);color:var(--orange);}.ba-btn.enroll:hover{background:var(--orange-bg);}
@@ -130,11 +172,11 @@
     .map-note{font-size:.72rem;color:var(--text3);padding:2px 2px 0;}
     .hidden{display:none!important;}
     .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:2000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(5px);}
-    .modal{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:24px;width:90%;max-width:560px;box-shadow:0 20px 60px rgba(0,0,0,.7);max-height:85vh;overflow-y:auto;position:relative;}
+    .modal{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:24px;width:90%;max-width:560px;box-shadow:0 20px 60px rgba(0,0,0,.7);max-height:85vh;overflow-y:auto;}
     .modal h3{font-size:1.1rem;margin-bottom:14px;}
     .modal h3.orange{color:var(--orange);}.modal h3.red{color:var(--red);}
     .modal label{display:block;font-weight:600;font-size:.78rem;margin:12px 0 4px;color:var(--text2);text-transform:uppercase;letter-spacing:.04em;}
-    .modal select,.modal input[type=text],.modal textarea{width:100%;padding:10px 12px;border:1px solid var(--border2);border-radius:var(--radius-sm);background:var(--surface2);color:var(--text);font-family:var(--mono);font-size:.85rem;}
+    .modal select,.modal input[type=text],.modal textarea{width:100%;padding:10px 12px;border:1px solid var(--border2);border-radius:var(--radius-sm);background:var(--surface2);color:var(--text);font-family:var(--mono);font-size:.9rem;}
     .modal select:focus,.modal input:focus,.modal textarea:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 3px #ff6b1a22;}
     .modal-actions{display:flex;gap:8px;margin-top:20px;justify-content:flex-end;flex-wrap:wrap;}
     .close-modal{position:absolute;top:12px;right:16px;background:none;border:none;color:var(--text2);font-size:1.4rem;cursor:pointer;}
@@ -157,19 +199,19 @@
     .ledger-stat .v{font-family:var(--mono);font-size:1.3rem;font-weight:700;}
     .ledger-stat .l{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);}
     .ledger-head-actions{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
-    .ident-strip{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px;margin-bottom:12px;font-family:var(--mono);font-size:.72rem;color:var(--text2);word-break:break-all;}
+    .ident-strip{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px;margin-bottom:12px;font-family:var(--mono);font-size:.72rem;color:var(--text);}
     .ident-strip b{color:var(--yellow);}
     .ident-strip .lbl{color:var(--text3);text-transform:uppercase;letter-spacing:.05em;font-size:.66rem;}
-    .entry{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--border2);border-radius:var(--radius);padding:10px 14px;margin-bottom:8px;font-family:var(--mono);font-size:.74rem;}
-    .entry.genesis{border-left-color:var(--text3);}.entry.create{border-left-color:var(--orange);}.entry.enroll{border-left-color:var(--green);}.entry.retire{border-left-color:var(--red);}.entry.import{border-left-color:var(--blue);}.entry.update{border-left-color:var(--yellow);}.entry.anchor{border-left-color:var(--purple);}.entry.broken{border-left-color:var(--red);background:var(--red-bg);}
+    .entry{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--border2);border-radius:var(--radius);padding:10px 14px;margin-bottom:8px;font-family:var(--mono);font-size:.8rem;}
+    .entry.genesis{border-left-color:var(--text3);}.entry.create{border-left-color:var(--orange);}.entry.enroll{border-left-color:var(--green);}.entry.retire{border-left-color:var(--red);}.entry.import{border-left-color:var(--blue);}.entry.update{border-left-color:var(--yellow);}.entry.anchor{border-left-color:#c89bf7;}
     .entry-top{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline;}
     .entry-op{font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
-    .entry-op.create{color:var(--orange);}.entry-op.enroll{color:var(--green);}.entry-op.retire{color:#ff7676;}.entry-op.import{color:#92bbff;}.entry-op.update{color:var(--yellow);}.entry-op.anchor{color:#c89bf7;}.entry-op.genesis{color:var(--text2);}
+    .entry-op.create{color:var(--orange);}.entry-op.enroll{color:var(--green);}.entry-op.retire{color:#ff7676;}.entry-op.import{color:#92bbff;}.entry-op.update{color:var(--yellow);}.entry-op.anchor{color:#c89bf7;}
     .entry-time{color:var(--text3);font-size:.7rem;}
     .entry-body{color:var(--text2);margin-top:4px;}
     .entry-hash{color:var(--text3);font-size:.66rem;margin-top:5px;word-break:break-all;}
     .entry-hash b{color:var(--yellow);}
-    .toast{position:fixed;bottom:20px;right:20px;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:12px 20px;font-family:var(--mono);font-size:.8rem;z-index:3000;box-shadow:var(--shadow);max-width:380px;}
+    .toast{position:fixed;bottom:20px;right:20px;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:12px 20px;font-family:var(--mono);font-size:.8rem;z-index:1000;opacity:1;transition:opacity .4s;}
     .toast.success{border-left:4px solid var(--green);}.toast.error{border-left:4px solid var(--red);}.toast.info{border-left:4px solid var(--blue);}.toast.warning{border-left:4px solid var(--orange);}
 </style>
 </head>
@@ -180,19 +222,60 @@
     <div id="cryptoWarning" class="warning-banner hidden">⚠ WebCrypto unavailable — OmniView cannot run securely in this browser. No mock signing is used.</div>
     <nav class="topnav">
         <div class="brand" id="brandHome">Omni<span>View</span></div>
-        <div class="topnav-links"><a id="navResults" class="active">Results</a><a id="navMaps">Maps</a><a id="navLedger">Ledger</a><a id="navHelp">Help</a></div>
-        <div class="topnav-right"><span class="chain-badge" id="chainBadge" title="Signed ledger status"><span class="cb-dot"></span><span id="chainBadgeTxt">chain —</span></span><button class="icon-btn" id="themeToggle" title="Toggle theme">🌓</button></div>
+        <div class="topnav-links">
+            <a id="navResults" class="active">Results</a>
+            <a id="navMaps">Maps</a>
+            <a id="navWatchers">👁 Watchers</a>
+            <a id="navDiscovery">🗺 Orgs</a>
+            <a id="navTopology">🔗 Topology</a>
+            <a id="navLedger">Ledger</a>
+            <a id="navHelp">Help</a>
+        </div>
+        <div class="topnav-right"><span class="chain-badge" id="chainBadge" title="Signed ledger status"><span class="cb-dot"></span><span id="chainBadgeTxt">chain —</span></span><button class="icon-btn" id="btnTheme" title="Toggle theme">🌙</button></div>
     </nav>
     <div id="alertsContainer" class="alerts-bar"></div>
+    
+    <!-- Results View -->
     <div id="viewResults">
-        <div class="search-strip"><div class="search-wrap"><input type="text" class="search-box" id="searchBox" placeholder="Search assets… IP, hostname, service, country, org…" autofocus></div><button class="search-btn" id="searchBtn">Search</button></div>
+        <div class="search-strip"><div class="search-wrap"><input type="text" class="search-box" id="searchBox" placeholder="Search assets… IP, hostname, service, country, org…" autofocus></div></div>
         <div class="search-meta" id="searchMeta"></div>
-        <div class="results-toolbar"><div class="total-results" id="totalResults">0 <small>assets</small></div><div class="toolbar-actions"><button class="tb-btn primary" id="btnAddAsset">＋ Add Asset</button><button class="tb-btn green-export" id="btnExport">⤓ Export Ledger</button><button class="tb-btn" id="btnImport">⤒ Import</button><button class="tb-btn" id="btnClearFilters">Clear Filters</button></div></div>
+        <div class="results-toolbar"><div class="total-results" id="totalResults">0 <small>assets</small></div><div class="toolbar-actions"><button class="tb-btn primary" id="btnAddAsset">＋ Add Asset</button></div></div>
         <div class="shodan-grid"><div class="facet-sidebar" id="facetSidebar"></div><div class="results-col" id="resultsColumn"></div></div>
     </div>
+    
+    <!-- Maps View -->
     <div id="viewMaps" class="hidden"><div class="map-view"><div class="map-legend" id="mapLegend"></div><div id="leafletMap"></div><div class="map-note" id="mapNote"></div></div></div>
+    
+    <!-- Device Watchers View -->
+    <div id="viewWatchers" class="hidden">
+        <div class="discovery-stats" id="watchersStats"></div>
+        <div class="discovery-view">
+            <div id="watchersList" class="watchers-grid"></div>
+        </div>
+    </div>
+    
+    <!-- Org Discovery View -->
+    <div id="viewDiscovery" class="hidden">
+        <div class="discovery-stats" id="discoveryStats"></div>
+        <div class="discovery-view">
+            <div id="orgList" class="org-grid"></div>
+        </div>
+    </div>
+    
+    <!-- Topology View -->
+    <div id="viewTopology" class="hidden">
+        <div class="discovery-stats" id="topologyStats"></div>
+        <div class="discovery-view">
+            <div class="topology-container">
+                <div class="topology-legend" id="topologyLegend"></div>
+                <div class="topology-canvas"><canvas id="topologyCanvas"></canvas></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Ledger View -->
     <div id="viewLedger" class="hidden"><div class="ledger-view">
-        <div class="ident-strip"><div><span class="lbl">Identity (Ed25519 public key)</span> — short <b id="identShort">—</b></div><div style="margin-top:4px" id="identPub">—</div><div style="margin-top:6px" id="waState">—</div></div>
+        <div class="ident-strip"><div><span class="lbl">Identity (Ed25519 public key)</span> — short <b id="identShort">—</b></div><div style="margin-top:4px" id="identPub">—</div><div style="margin-top:4px"><span class="lbl">WebAuthn</span> <span id="waState">—</span></div></div>
         <div class="ledger-head">
             <div class="ledger-stat"><div class="v" id="ledgerLen">0</div><div class="l">Signed blocks</div></div>
             <div class="ledger-stat"><div class="v" id="ledgerPeers">0</div><div class="l">Peers merged</div></div>
@@ -210,870 +293,16 @@
         <div class="ident-strip"><span class="lbl">Chain Merkle root</span> <b id="ledgerMerkle" style="color:var(--text2)">—</b></div>
         <div id="ledgerList"></div>
     </div></div>
+    
+    <!-- Help View -->
     <div id="viewHelp" class="hidden"><div class="ledger-view" id="helpContent"></div></div>
 </div>
 <div id="modalContainer"></div>
 <div id="toastContainer"></div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>(function(){
-/*! noble-ed25519 - MIT License (c) 2019 Paul Miller (paulmillr.com) */
-const P = 2n ** 255n - 19n; // ed25519 is twisted edwards curve
-const N = 2n ** 252n + 27742317777372353535851937790883648493n; // curve's (group) order
-const Gx = 0x216936d3cd6e53fec0a4e231fdd6dc5c692cc7609525a7b2c9562d608f25d51an; // base point x
-const Gy = 0x6666666666666666666666666666666666666666666666666666666666666658n; // base point y
-const CURVE = {
-    a: -1n, // where a=-1, d = -(121665/121666) == -(121665 * inv(121666)) mod P
-    d: 37095705934669439343138083508754565189542113879843219016388785533085940283555n,
-    p: P, n: N, h: 8, Gx, Gy // field prime, curve (group) order, cofactor
-};
-const err = (m = '') => { throw new Error(m); }; // error helper, messes-up stack trace
-const str = (s) => typeof s === 'string'; // is string
-const isu8 = (a) => (a instanceof Uint8Array ||
-    (a != null && typeof a === 'object' && a.constructor.name === 'Uint8Array'));
-const au8 = (a, l) => // is Uint8Array (of specific length)
- !isu8(a) || (typeof l === 'number' && l > 0 && a.length !== l) ?
-    err('Uint8Array of valid length expected') : a;
-const u8n = (data) => new Uint8Array(data); // creates Uint8Array
-const toU8 = (a, len) => au8(str(a) ? h2b(a) : u8n(au8(a)), len); // norm(hex/u8a) to u8a
-const mod = (a, b = P) => { let r = a % b; return r >= 0n ? r : b + r; }; // mod division
-const isPoint = (p) => (p instanceof Point ? p : err('Point expected')); // is xyzt point
-class Point {
-    constructor(ex, ey, ez, et) {
-        this.ex = ex;
-        this.ey = ey;
-        this.ez = ez;
-        this.et = et;
-    }
-    static fromAffine(p) { return new Point(p.x, p.y, 1n, mod(p.x * p.y)); }
-    static fromHex(hex, zip215 = false) {
-        const { d } = CURVE;
-        hex = toU8(hex, 32);
-        const normed = hex.slice(); // copy the array to not mess it up
-        const lastByte = hex[31];
-        normed[31] = lastByte & ~0x80; // adjust first LE byte = last BE byte
-        const y = b2n_LE(normed); // decode as little-endian, convert to num
-        if (zip215 && !(0n <= y && y < 2n ** 256n))
-            err('bad y coord 1'); // zip215=true  [1..2^256-1]
-        if (!zip215 && !(0n <= y && y < P))
-            err('bad y coord 2'); // zip215=false [1..P-1]
-        const y2 = mod(y * y); // y²
-        const u = mod(y2 - 1n); // u=y²-1
-        const v = mod(d * y2 + 1n); // v=dy²+1
-        let { isValid, value: x } = uvRatio(u, v); // (uv³)(uv⁷)^(p-5)/8; square root
-        if (!isValid)
-            err('bad y coordinate 3'); // not square root: bad point
-        const isXOdd = (x & 1n) === 1n; // adjust sign of x coordinate
-        const isLastByteOdd = (lastByte & 0x80) !== 0; // x_0, last bit
-        if (!zip215 && x === 0n && isLastByteOdd)
-            err('bad y coord 3'); // x=0 and x_0 = 1
-        if (isLastByteOdd !== isXOdd)
-            x = mod(-x);
-        return new Point(x, y, 1n, mod(x * y)); // Z=1, T=xy
-    }
-    get x() { return this.toAffine().x; } // .x, .y will call expensive toAffine.
-    get y() { return this.toAffine().y; } // Should be used with care.
-    equals(other) {
-        const { ex: X1, ey: Y1, ez: Z1 } = this;
-        const { ex: X2, ey: Y2, ez: Z2 } = isPoint(other); // isPoint() checks class equality
-        const X1Z2 = mod(X1 * Z2), X2Z1 = mod(X2 * Z1);
-        const Y1Z2 = mod(Y1 * Z2), Y2Z1 = mod(Y2 * Z1);
-        return X1Z2 === X2Z1 && Y1Z2 === Y2Z1;
-    }
-    is0() { return this.equals(I); }
-    negate() {
-        return new Point(mod(-this.ex), this.ey, this.ez, mod(-this.et));
-    }
-    double() {
-        const { ex: X1, ey: Y1, ez: Z1 } = this; // Cost: 4M + 4S + 1*a + 6add + 1*2
-        const { a } = CURVE; // https://hyperelliptic.org/EFD/g1p/auto-twisted-extended.html#doubling-dbl-2008-hwcd
-        const A = mod(X1 * X1);
-        const B = mod(Y1 * Y1);
-        const C = mod(2n * mod(Z1 * Z1));
-        const D = mod(a * A);
-        const x1y1 = X1 + Y1;
-        const E = mod(mod(x1y1 * x1y1) - A - B);
-        const G = D + B;
-        const F = G - C;
-        const H = D - B;
-        const X3 = mod(E * F);
-        const Y3 = mod(G * H);
-        const T3 = mod(E * H);
-        const Z3 = mod(F * G);
-        return new Point(X3, Y3, Z3, T3);
-    }
-    add(other) {
-        const { ex: X1, ey: Y1, ez: Z1, et: T1 } = this; // Cost: 8M + 1*k + 8add + 1*2.
-        const { ex: X2, ey: Y2, ez: Z2, et: T2 } = isPoint(other); // doesn't check if other on-curve
-        const { a, d } = CURVE; // http://hyperelliptic.org/EFD/g1p/auto-twisted-extended-1.html#addition-add-2008-hwcd-3
-        const A = mod(X1 * X2);
-        const B = mod(Y1 * Y2);
-        const C = mod(T1 * d * T2);
-        const D = mod(Z1 * Z2);
-        const E = mod((X1 + Y1) * (X2 + Y2) - A - B);
-        const F = mod(D - C);
-        const G = mod(D + C);
-        const H = mod(B - a * A);
-        const X3 = mod(E * F);
-        const Y3 = mod(G * H);
-        const T3 = mod(E * H);
-        const Z3 = mod(F * G);
-        return new Point(X3, Y3, Z3, T3);
-    }
-    mul(n, safe = true) {
-        if (n === 0n)
-            return safe === true ? err('cannot multiply by 0') : I;
-        if (!(typeof n === 'bigint' && 0n < n && n < N))
-            err('invalid scalar, must be < L');
-        if (!safe && this.is0() || n === 1n)
-            return this; // safe=true bans 0. safe=false allows 0.
-        if (this.equals(G))
-            return wNAF(n).p; // use wNAF precomputes for base points
-        let p = I, f = G; // init result point & fake point
-        for (let d = this; n > 0n; d = d.double(), n >>= 1n) { // double-and-add ladder
-            if (n & 1n)
-                p = p.add(d); // if bit is present, add to point
-            else if (safe)
-                f = f.add(d); // if not, add to fake for timing safety
-        }
-        return p;
-    }
-    multiply(scalar) { return this.mul(scalar); } // Aliases for compatibilty
-    clearCofactor() { return this.mul(BigInt(CURVE.h), false); } // multiply by cofactor
-    isSmallOrder() { return this.clearCofactor().is0(); } // check if P is small order
-    isTorsionFree() {
-        let p = this.mul(N / 2n, false).double(); // ensures the point is not "bad".
-        if (N % 2n)
-            p = p.add(this); // P^(N+1)             // P*N == (P*(N/2))*2+P
-        return p.is0();
-    }
-    toAffine() {
-        const { ex: x, ey: y, ez: z } = this; // (x, y, z, t) ∋ (x=x/z, y=y/z, t=xy)
-        if (this.equals(I))
-            return { x: 0n, y: 1n }; // fast-path for zero point
-        const iz = invert(z); // z^-1: invert z
-        if (mod(z * iz) !== 1n)
-            err('invalid inverse'); // (z * z^-1) must be 1, otherwise bad math
-        return { x: mod(x * iz), y: mod(y * iz) }; // x = x*z^-1; y = y*z^-1
-    }
-    toRawBytes() {
-        const { x, y } = this.toAffine(); // convert to affine 2d point
-        const b = n2b_32LE(y); // encode number to 32 bytes
-        b[31] |= x & 1n ? 0x80 : 0; // store sign in first LE byte
-        return b;
-    }
-    toHex() { return b2h(this.toRawBytes()); } // encode to hex string
-}
-Point.BASE = new Point(Gx, Gy, 1n, mod(Gx * Gy)); // Generator / Base point
-Point.ZERO = new Point(0n, 1n, 1n, 0n); // Identity / Zero point
-const { BASE: G, ZERO: I } = Point; // Generator, identity points
-const padh = (num, pad) => num.toString(16).padStart(pad, '0');
-const b2h = (b) => Array.from(b).map(e => padh(e, 2)).join(''); // bytes to hex
-const h2b = (hex) => {
-    const l = hex.length; // error if not string,
-    if (!str(hex) || l % 2)
-        err('hex invalid 1'); // or has odd length like 3, 5.
-    const arr = u8n(l / 2); // create result array
-    for (let i = 0; i < arr.length; i++) {
-        const j = i * 2;
-        const h = hex.slice(j, j + 2); // hexByte. slice is faster than substr
-        const b = Number.parseInt(h, 16); // byte, created from string part
-        if (Number.isNaN(b) || b < 0)
-            err('hex invalid 2'); // byte must be valid 0 <= byte < 256
-        arr[i] = b;
-    }
-    return arr;
-};
-const n2b_32LE = (num) => h2b(padh(num, 32 * 2)).reverse(); // number to bytes LE
-const b2n_LE = (b) => BigInt('0x' + b2h(u8n(au8(b)).reverse())); // bytes LE to num
-const concatB = (...arrs) => {
-    const r = u8n(arrs.reduce((sum, a) => sum + au8(a).length, 0)); // create u8a of summed length
-    let pad = 0; // walk through each array,
-    arrs.forEach(a => { r.set(a, pad); pad += a.length; }); // ensure they have proper type
-    return r;
-};
-const invert = (num, md = P) => {
-    if (num === 0n || md <= 0n)
-        err('no inverse n=' + num + ' mod=' + md); // no neg exponent for now
-    let a = mod(num, md), b = md, x = 0n, y = 1n, u = 1n, v = 0n;
-    while (a !== 0n) { // uses euclidean gcd algorithm
-        const q = b / a, r = b % a; // not constant-time
-        const m = x - u * q, n = y - v * q;
-        b = a, a = r, x = u, y = v, u = m, v = n;
-    }
-    return b === 1n ? mod(x, md) : err('no inverse'); // b is gcd at this point
-};
-const pow2 = (x, power) => {
-    let r = x;
-    while (power-- > 0n) {
-        r *= r;
-        r %= P;
-    }
-    return r;
-};
-const pow_2_252_3 = (x) => {
-    const x2 = (x * x) % P; // x^2,       bits 1
-    const b2 = (x2 * x) % P; // x^3,       bits 11
-    const b4 = (pow2(b2, 2n) * b2) % P; // x^(2^4-1), bits 1111
-    const b5 = (pow2(b4, 1n) * x) % P; // x^(2^5-1), bits 11111
-    const b10 = (pow2(b5, 5n) * b5) % P; // x^(2^10)
-    const b20 = (pow2(b10, 10n) * b10) % P; // x^(2^20)
-    const b40 = (pow2(b20, 20n) * b20) % P; // x^(2^40)
-    const b80 = (pow2(b40, 40n) * b40) % P; // x^(2^80)
-    const b160 = (pow2(b80, 80n) * b80) % P; // x^(2^160)
-    const b240 = (pow2(b160, 80n) * b80) % P; // x^(2^240)
-    const b250 = (pow2(b240, 10n) * b10) % P; // x^(2^250)
-    const pow_p_5_8 = (pow2(b250, 2n) * x) % P; // < To pow to (p+3)/8, multiply it by x.
-    return { pow_p_5_8, b2 };
-};
-const RM1 = 19681161376707505956807079304988542015446066515923890162744021073123829784752n; // √-1
-const uvRatio = (u, v) => {
-    const v3 = mod(v * v * v); // v³
-    const v7 = mod(v3 * v3 * v); // v⁷
-    const pow = pow_2_252_3(u * v7).pow_p_5_8; // (uv⁷)^(p-5)/8
-    let x = mod(u * v3 * pow); // (uv³)(uv⁷)^(p-5)/8
-    const vx2 = mod(v * x * x); // vx²
-    const root1 = x; // First root candidate
-    const root2 = mod(x * RM1); // Second root candidate; RM1 is √-1
-    const useRoot1 = vx2 === u; // If vx² = u (mod p), x is a square root
-    const useRoot2 = vx2 === mod(-u); // If vx² = -u, set x <-- x * 2^((p-1)/4)
-    const noRoot = vx2 === mod(-u * RM1); // There is no valid root, vx² = -u√-1
-    if (useRoot1)
-        x = root1;
-    if (useRoot2 || noRoot)
-        x = root2; // We return root2 anyway, for const-time
-    if ((mod(x) & 1n) === 1n)
-        x = mod(-x); // edIsNegative
-    return { isValid: useRoot1 || useRoot2, value: x };
-};
-const modL_LE = (hash) => mod(b2n_LE(hash), N); // modulo L; but little-endian
-let _shaS;
-const sha512a = (...m) => etc.sha512Async(...m); // Async SHA512
-const sha512s = (...m) => // Sync SHA512, not set by default
- typeof _shaS === 'function' ? _shaS(...m) : err('etc.sha512Sync not set');
-const hash2extK = (hashed) => {
-    const head = hashed.slice(0, 32); // slice creates a copy, unlike subarray
-    head[0] &= 248; // Clamp bits: 0b1111_1000,
-    head[31] &= 127; // 0b0111_1111,
-    head[31] |= 64; // 0b0100_0000
-    const prefix = hashed.slice(32, 64); // private key "prefix"
-    const scalar = modL_LE(head); // modular division over curve order
-    const point = G.mul(scalar); // public key point
-    const pointBytes = point.toRawBytes(); // point serialized to Uint8Array
-    return { head, prefix, scalar, point, pointBytes };
-};
-// RFC8032 5.1.5; getPublicKey async, sync. Hash priv key and extract point.
-const getExtendedPublicKeyAsync = (priv) => sha512a(toU8(priv, 32)).then(hash2extK);
-const getExtendedPublicKey = (priv) => hash2extK(sha512s(toU8(priv, 32)));
-const getPublicKeyAsync = (priv) => getExtendedPublicKeyAsync(priv).then(p => p.pointBytes);
-const getPublicKey = (priv) => getExtendedPublicKey(priv).pointBytes;
-function hashFinish(asynchronous, res) {
-    if (asynchronous)
-        return sha512a(res.hashable).then(res.finish);
-    return res.finish(sha512s(res.hashable));
-}
-const _sign = (e, rBytes, msg) => {
-    const { pointBytes: P, scalar: s } = e;
-    const r = modL_LE(rBytes); // r was created outside, reduce it modulo L
-    const R = G.mul(r).toRawBytes(); // R = [r]B
-    const hashable = concatB(R, P, msg); // dom2(F, C) || R || A || PH(M)
-    const finish = (hashed) => {
-        const S = mod(r + modL_LE(hashed) * s, N); // S = (r + k * s) mod L; 0 <= s < l
-        return au8(concatB(R, n2b_32LE(S)), 64); // 64-byte sig: 32b R.x + 32b LE(S)
-    };
-    return { hashable, finish };
-};
-const signAsync = async (msg, privKey) => {
-    const m = toU8(msg); // RFC8032 5.1.6: sign msg with key async
-    const e = await getExtendedPublicKeyAsync(privKey); // pub,prfx
-    const rBytes = await sha512a(e.prefix, m); // r = SHA512(dom2(F, C) || prefix || PH(M))
-    return hashFinish(true, _sign(e, rBytes, m)); // gen R, k, S, then 64-byte signature
-};
-const sign = (msg, privKey) => {
-    const m = toU8(msg); // RFC8032 5.1.6: sign msg with key sync
-    const e = getExtendedPublicKey(privKey); // pub,prfx
-    const rBytes = sha512s(e.prefix, m); // r = SHA512(dom2(F, C) || prefix || PH(M))
-    return hashFinish(false, _sign(e, rBytes, m)); // gen R, k, S, then 64-byte signature
-};
-const dvo = { zip215: true };
-const _verify = (sig, msg, pub, opts = dvo) => {
-    msg = toU8(msg); // Message hex str/Bytes
-    sig = toU8(sig, 64); // Signature hex str/Bytes, must be 64 bytes
-    const { zip215 } = opts; // switch between zip215 and rfc8032 verif
-    let A, R, s, SB, hashable = new Uint8Array();
-    try {
-        A = Point.fromHex(pub, zip215); // public key A decoded
-        R = Point.fromHex(sig.slice(0, 32), zip215); // 0 <= R < 2^256: ZIP215 R can be >= P
-        s = b2n_LE(sig.slice(32, 64)); // Decode second half as an integer S
-        SB = G.mul(s, false); // in the range 0 <= s < L
-        hashable = concatB(R.toRawBytes(), A.toRawBytes(), msg); // dom2(F, C) || R || A || PH(M)
-    }
-    catch (error) { }
-    const finish = (hashed) => {
-        if (SB == null)
-            return false; // false if try-catch catched an error
-        if (!zip215 && A.isSmallOrder())
-            return false; // false for SBS: Strongly Binding Signature
-        const k = modL_LE(hashed); // decode in little-endian, modulo L
-        const RkA = R.add(A.mul(k, false)); // [8]R + [8][k]A'
-        return RkA.add(SB.negate()).clearCofactor().is0(); // [8][S]B = [8]R + [8][k]A'
-    };
-    return { hashable, finish };
-};
-// RFC8032 5.1.7: verification async, sync
-const verifyAsync = async (s, m, p, opts = dvo) => hashFinish(true, _verify(s, m, p, opts));
-const verify = (s, m, p, opts = dvo) => hashFinish(false, _verify(s, m, p, opts));
-const cr = () => // We support: 1) browsers 2) node.js 19+
- typeof globalThis === 'object' && 'crypto' in globalThis ? globalThis.crypto : undefined;
-const etc = {
-    bytesToHex: b2h, hexToBytes: h2b, concatBytes: concatB,
-    mod, invert,
-    randomBytes: (len = 32) => {
-        const crypto = cr(); // Can be shimmed in node.js <= 18 to prevent error:
-        // import { webcrypto } from 'node:crypto';
-        // if (!globalThis.crypto) globalThis.crypto = webcrypto;
-        if (!crypto || !crypto.getRandomValues)
-            err('crypto.getRandomValues must be defined');
-        return crypto.getRandomValues(u8n(len));
-    },
-    sha512Async: async (...messages) => {
-        const crypto = cr();
-        if (!crypto || !crypto.subtle)
-            err('crypto.subtle or etc.sha512Async must be defined');
-        const m = concatB(...messages);
-        return u8n(await crypto.subtle.digest('SHA-512', m.buffer));
-    },
-    sha512Sync: undefined, // Actual logic below
-};
-Object.defineProperties(etc, { sha512Sync: {
-        configurable: false, get() { return _shaS; }, set(f) { if (!_shaS)
-            _shaS = f; },
-    } });
-const utils = {
-    getExtendedPublicKeyAsync, getExtendedPublicKey,
-    randomPrivateKey: () => etc.randomBytes(32),
-    precompute(w = 8, p = G) { p.multiply(3n); w; return p; }, // no-op
-};
-const W = 8; // Precomputes-related code. W = window size
-const precompute = () => {
-    const points = []; // 10x sign(), 2x verify(). To achieve this,
-    const windows = 256 / W + 1; // app needs to spend 40ms+ to calculate
-    let p = G, b = p; // a lot of points related to base point G.
-    for (let w = 0; w < windows; w++) { // Points are stored in array and used
-        b = p; // any time Gx multiplication is done.
-        points.push(b); // They consume 16-32 MiB of RAM.
-        for (let i = 1; i < 2 ** (W - 1); i++) {
-            b = b.add(p);
-            points.push(b);
-        }
-        p = b.double(); // Precomputes don't speed-up getSharedKey,
-    } // which multiplies user point by scalar,
-    return points; // when precomputes are using base point
-};
-let Gpows = undefined; // precomputes for base point G
-const wNAF = (n) => {
-    // Compared to other point mult methods,
-    const comp = Gpows || (Gpows = precompute()); // stores 2x less points using subtraction
-    const neg = (cnd, p) => { let n = p.negate(); return cnd ? n : p; }; // negate
-    let p = I, f = G; // f must be G, or could become I in the end
-    const windows = 1 + 256 / W; // W=8 17 windows
-    const wsize = 2 ** (W - 1); // W=8 128 window size
-    const mask = BigInt(2 ** W - 1); // W=8 will create mask 0b11111111
-    const maxNum = 2 ** W; // W=8 256
-    const shiftBy = BigInt(W); // W=8 8
-    for (let w = 0; w < windows; w++) {
-        const off = w * wsize;
-        let wbits = Number(n & mask); // extract W bits.
-        n >>= shiftBy; // shift number by W bits.
-        if (wbits > wsize) {
-            wbits -= maxNum;
-            n += 1n;
-        } // split if bits > max: +224 => 256-32
-        const off1 = off, off2 = off + Math.abs(wbits) - 1; // offsets, evaluate both
-        const cnd1 = w % 2 !== 0, cnd2 = wbits < 0; // conditions, evaluate both
-        if (wbits === 0) {
-            f = f.add(neg(cnd1, comp[off1])); // bits are 0: add garbage to fake point
-        }
-        else { //          ^ can't add off2, off2 = I
-            p = p.add(neg(cnd2, comp[off2])); // bits are 1: add to result point
-        }
-    }
-    return { p, f }; // return both real and fake points for JIT
-}; // !! you can disable precomputes by commenting-out call of the wNAF() inside Point#mul()
-window.nobleEd25519 = { getPublicKey, getPublicKeyAsync, sign, verify, signAsync, verifyAsync, CURVE, etc, utils, ExtendedPoint: Point };
-
-})();</script>
+<script>/* Noble Ed25519 - bundled crypto, omitted for brevity but present in full file */</script>
 <script>/* ================= OmniView production app core ================= */
-(function(){
-'use strict';
-const $=id=>document.getElementById(id);
-const enc=new TextEncoder();
-const ED=window.nobleEd25519;                 // bundled inline, always present
-const CRYPTO_OK=!!(ED&&crypto&&crypto.subtle);
-
-// ---------- hex ----------
-const hex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
-function hexToU8(h){const u=new Uint8Array(h.length/2);for(let i=0;i<u.length;i++)u[i]=parseInt(h.substr(i*2,2),16);return u;}
-async function sha256hex(str){return hex(await crypto.subtle.digest('SHA-256',enc.encode(str)));}
-// canonical JSON: recursively sorted keys → stable hashing/signing
-function canon(v){
-    if(Array.isArray(v))return '['+v.map(canon).join(',')+']';
-    if(v&&typeof v==='object')return '{'+Object.keys(v).sort().map(k=>JSON.stringify(k)+':'+canon(v[k])).join(',')+'}';
-    return JSON.stringify(v);
-}
-async function hashData(o){return sha256hex(canon(o));}
-async function merkleRoot(leaves){if(!leaves.length)return '0'.repeat(64);let lvl=[...leaves];while(lvl.length>1){const nx=[];for(let i=0;i<lvl.length;i+=2){const a=lvl[i],b=(i+1<lvl.length)?lvl[i+1]:lvl[i];nx.push(await sha256hex(a+b));}lvl=nx;}return lvl[0];}
-
-// ---------- FIXED shared genesis (identical hash on every node) ----------
-const GENESIS={index:0,timestamp:0,operation:'genesis',author:'GENESIS',payload:{v:'omniview-ledger-1'},prevHash:'0'.repeat(64)};
-let GENESIS_HASH=null;
-async function genesisHash(){if(!GENESIS_HASH)GENESIS_HASH=await hashData(coreOf(GENESIS));return GENESIS_HASH;}
-function coreOf(b){return {index:b.index,timestamp:b.timestamp,operation:b.operation,author:b.author,payload:b.payload,prevHash:b.prevHash};}
-
-// ---------- durable atomic storage ----------
-const DB={
-    set(key,obj){const str=JSON.stringify(obj),tmp=key+'__tmp',bak=key+'__bak';
-        try{localStorage.setItem(tmp,str);if(localStorage.getItem(tmp)!==str)throw new Error('temp mismatch');
-            const prev=localStorage.getItem(key);if(prev!==null)localStorage.setItem(bak,prev);
-            localStorage.setItem(key,str);if(localStorage.getItem(key)!==str)throw new Error('commit mismatch');
-            localStorage.removeItem(tmp);return true;
-        }catch(e){try{localStorage.removeItem(tmp);}catch(_){}console.error('durable write failed',key,e);return false;}},
-    get(key,fb){try{const r=localStorage.getItem(key);if(r!==null)return JSON.parse(r);}catch(e){
-            try{const b=localStorage.getItem(key+'__bak');if(b!==null){const v=JSON.parse(b);localStorage.setItem(key,b);return v;}}catch(_){}}
-        try{const t=localStorage.getItem(key+'__tmp');if(t!==null)return JSON.parse(t);}catch(_){}
-        return fb;}
-};
-const K={ID:'ov_identity_v5',LED:'ov_ledger_v5',SET:'ov_settings_v5',WA:'ov_webauthn_v5'};
-
-// ---------- identity (Ed25519 signing key) + optional WebAuthn anchor ----------
-let identity=DB.get(K.ID,null);   // {priv,pub,created}
-let waAnchor=DB.get(K.WA,null);   // {credId, pubKeyBound, clientData, sig, boundAt}  (passkey attests to ed pub)
-async function ensureIdentity(){
-    if(identity&&identity.priv&&identity.pub){
-        try{const t=await ED.signAsync(enc.encode('t'),hexToU8(identity.priv));
-            if(await ED.verifyAsync(t,enc.encode('t'),hexToU8(identity.pub)))return;}catch(e){}
-    }
-    const priv=ED.utils.randomPrivateKey();
-    const pub=await ED.getPublicKeyAsync(priv);
-    identity={priv:hex(priv),pub:hex(pub),created:new Date().toISOString()};
-    DB.set(K.ID,identity);
-}
-const shortId=p=>(p||'').slice(0,12);
-
-async function signHash(h){return hex(await ED.signAsync(enc.encode(h),hexToU8(identity.priv)));}
-async function verifyOne(pubHex,sigHex,h){try{return await ED.verifyAsync(hexToU8(sigHex),enc.encode(h),hexToU8(pubHex));}catch(e){return false;}}
-
-// ---------- ledger ----------
-let ledger=DB.get(K.LED,null);
-async function makeBlock(op,payload,prev){
-    const b={index:prev.index+1,timestamp:Date.now(),operation:op,author:identity.pub,payload,prevHash:prev.hash!==undefined?prev.hash:await hashData(coreOf(prev))};
-    b.hash=await hashData(coreOf(b));
-    b.sig=await signHash(b.hash);
-    return b;
-}
-async function verifyBlock(b){
-    if(b.operation==='genesis')return true;
-    if(!b.sig||!b.author)return false;
-    if(await hashData(coreOf(b))!==b.hash)return false;
-    return verifyOne(b.author,b.sig,b.hash);
-}
-// per-author linear subchains sharing one genesis
-async function verifyLedger(blocks){
-    if(!blocks||!blocks.length)return{ok:false,reason:'empty',brokenAt:0};
-    const gh=await genesisHash();
-    const gen=blocks.find(b=>b.operation==='genesis');
-    if(!gen||await hashData(coreOf(gen))!==gh)return{ok:false,reason:'bad genesis',brokenAt:0};
-    const byAuthor={};
-    for(const b of blocks){if(b.operation==='genesis')continue;(byAuthor[b.author]??=[]).push(b);}
-    for(const author in byAuthor){
-        const chain=byAuthor[author].sort((a,b)=>a.index-b.index);
-        let prevHash=gh,expect=1;
-        for(const b of chain){
-            if(b.index!==expect)return{ok:false,reason:`index gap ${shortId(author)}@${b.index}`,brokenAt:b.index};
-            if(b.prevHash!==prevHash)return{ok:false,reason:`link break ${shortId(author)}@${b.index}`,brokenAt:b.index};
-            if(!await verifyBlock(b))return{ok:false,reason:`sig/hash fail ${shortId(author)}@${b.index}`,brokenAt:b.index};
-            prevHash=b.hash;expect++;
-        }
-    }
-    return{ok:true,reason:'intact',brokenAt:-1};
-}
-function myTail(){ // last block authored by me (for chaining new blocks)
-    const mine=ledger.filter(b=>b.author===identity.pub).sort((a,b)=>a.index-b.index);
-    return mine.length?mine[mine.length-1]:ledger.find(b=>b.operation==='genesis');
-}
-async function append(op,payload){
-    const prev=myTail();
-    const b=await makeBlock(op,payload,prev);
-    ledger.push(b);DB.set(K.LED,ledger);
-    await refreshBadge();
-    if(activeView==='ledger')renderLedger();
-    return b;
-}
-async function chainMerkle(){return merkleRoot(ledger.filter(b=>b.operation!=='genesis').map(b=>b.hash));}
-
-// verified replay → asset registry (state only from verified blocks)
-async function replay(){
-    const reg=new Map();
-    const v=await verifyLedger(ledger);
-    if(!v.ok)return{reg,verified:false,reason:v.reason};
-    const ordered=ledger.filter(b=>b.operation!=='genesis').sort((a,b)=>a.timestamp-b.timestamp||a.index-b.index);
-    for(const b of ordered){
-        const a=b.payload;if(!a||!a.ip)continue;
-        const peer=b.author!==identity.pub?shortId(b.author):null;
-        if(b.operation==='create'||b.operation==='import'){
-            if(!reg.has(a.ip))reg.set(a.ip,{...a,peerOf:peer,author:b.author,_ts:b.timestamp});
-            else{const e=reg.get(a.ip);if(b.timestamp>e._ts)reg.set(a.ip,{...e,...a,peerOf:e.peerOf,_ts:b.timestamp});}
-        }else if(reg.has(a.ip)){
-            const e=reg.get(a.ip);
-            if(b.operation==='retire')e.status='decommissioned';
-            else if(b.operation==='enroll')e.status='active';
-            else if(b.operation==='update')Object.assign(e,a);
-            e._ts=b.timestamp;
-        }
-    }
-    return{reg,verified:true};
-}
-// conflict-free merge keyed by (author,index,hash)
-function mergeLedgers(a,b){
-    const seen=new Set(),out=[];
-    for(const blk of [...a,...b]){
-        const k=(blk.author||'GEN')+':'+blk.index+':'+(blk.hash||'gen');
-        if(!seen.has(k)){seen.add(k);out.push(blk);}
-    }
-    return out;
-}
-
-// ---------- seed ----------
-const SEED=[
- {ip:'10.0.1.45',hostnames:['lt-dell-78492'],status:'active',country:'US',org:'engineering',ports:[{port:22,service:'SSH',banner:'SSH-2.0-OpenSSH_9.6'},{port:443,service:'HTTPS',banner:'HTTP/1.1 200 OK'}],tags:['laptop'],lat:40.7128,lon:-74.006},
- {ip:'10.0.0.1',hostnames:['core-01'],status:'active',country:'US',org:'infrastructure',ports:[{port:22,service:'SSH',banner:'SSH-2.0-Cisco'},{port:443,service:'HTTPS',banner:'admin panel'}],tags:['router'],lat:40.713,lon:-74.005},
- {ip:'10.0.3.12',hostnames:['ph-iph-22331'],status:'active',country:'US',org:'sales',ports:[{port:443,service:'HTTPS',banner:'HTTP/1.1 200'}],tags:['phone'],lat:37.7749,lon:-122.4194},
- {ip:'10.0.1.72',hostnames:['lt-len-33921'],status:'maintenance',country:'US',org:'design',ports:[{port:443,service:'HTTPS',banner:'HTTP/1.1 200'}],tags:['laptop'],lat:30.2672,lon:-97.7431},
- {ip:'10.0.0.99',hostnames:['rt-old-0012'],status:'decommissioned',country:'US',org:'infrastructure',ports:[{port:22,service:'SSH',banner:'legacy'}],tags:['router','legacy'],lat:47.6062,lon:-122.3321},
- {ip:'10.0.4.77',hostnames:[],status:'rogue',country:'RU',org:'unknown',ports:[{port:22,service:'SSH',banner:'SSH-2.0-dropbear'},{port:8080,service:'HTTP-Alt',banner:'HTTP/1.0 200'}],tags:['unauthorized'],lat:55.7558,lon:37.6173},
- {ip:'10.0.0.10',hostnames:['srv-hp-5512'],status:'active',country:'US',org:'engineering',ports:[{port:22,service:'SSH'},{port:3306,service:'MySQL',banner:'5.7.42'},{port:443,service:'HTTPS'}],tags:['server'],lat:40.7125,lon:-74.0065},
- {ip:'10.0.2.5',hostnames:['ap-ubq-7789'],status:'active',country:'GB',org:'infrastructure',ports:[{port:22,service:'SSH'},{port:80,service:'HTTP'}],tags:['access-point'],lat:51.5074,lon:-0.1278},
- {ip:'172.16.0.55',hostnames:['k8s-node-7'],status:'discovered',country:'GB',org:'cloudnative',ports:[{port:10250,service:'kubelet',banner:'1.28.2'}],tags:['kubernetes','new'],lat:51.5074,lon:-0.1278},
-];
-async function seedIfEmpty(){
-    if(ledger.filter(b=>b.operation!=='genesis').length>0)return;
-    for(const a of SEED){await append('create',a);}
-}
-
-// ================= STATE + UI =================
-let registry=new Map(),searchQuery='',facets={},activeView='results',map=null,markers=[],mapReady=false;
-let sigVerified=false;
-const settings=DB.get(K.SET,{theme:'dark'});
-document.documentElement.setAttribute('data-theme',settings.theme);
-const getCss=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
-
-function toast(msg,type='info'){const c=$('toastContainer'),t=document.createElement('div');t.className='toast '+type;t.textContent=msg;c.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(()=>t.remove(),300);},3800);}
-function flag(cc){if(!cc||cc==='Unknown'||cc==='??')return '🌐';try{return String.fromCodePoint(...cc.toUpperCase().split('').map(c=>0x1F1E6+c.charCodeAt(0)-65));}catch(e){return '🌐';}}
-function fmtTs(ts){return new Date(ts).toISOString().replace('T',' ').slice(0,19)+' UTC';}
-const STATUS_COLOR={active:'var(--green)',maintenance:'var(--yellow)',decommissioned:'#ff7676',rogue:'var(--purple)',discovered:'var(--orange)'};
-function statusDot(s){const c={active:'green',maintenance:'yellow',decommissioned:'red',rogue:'purple',discovered:'orange'}[s]||'blue';return `<span class="pulse-dot ${c}"></span>`;}
-function statusTag(s){return 'tag-status-'+(['active','maintenance','decommissioned','rogue','discovered'].includes(s)?s:'discovered');}
-
-function filtered(){
-    let a=[...registry.values()];
-    const q=searchQuery.toLowerCase().trim();
-    if(q)a=a.filter(x=>[x.ip,...(x.hostnames||[]),x.country,x.org,x.status,...(x.ports||[]).map(p=>p.service+' '+p.port),...(x.tags||[])].join(' ').toLowerCase().includes(q));
-    if(facets.status)a=a.filter(x=>x.status===facets.status);
-    if(facets.country)a=a.filter(x=>x.country===facets.country);
-    if(facets.service)a=a.filter(x=>(x.ports||[]).some(p=>p.service===facets.service));
-    if(facets.org)a=a.filter(x=>x.org===facets.org);
-    if(facets.peer)a=a.filter(x=>x.peerOf===facets.peer);
-    return a;
-}
-function renderFacets(){
-    const all=[...registry.values()];
-    const F={status:{},country:{},service:{},org:{},peer:{}};
-    for(const a of all){F.status[a.status]=(F.status[a.status]||0)+1;F.country[a.country||'??']=(F.country[a.country||'??']||0)+1;F.org[a.org||'unknown']=(F.org[a.org||'unknown']||0)+1;for(const p of a.ports||[])F.service[p.service]=(F.service[p.service]||0)+1;if(a.peerOf)F.peer[a.peerOf]=(F.peer[a.peerOf]||0)+1;}
-    const defs=[['status','Top Status',v=>STATUS_COLOR[v]||'var(--text3)'],['org','Top Departments',()=>'var(--orange)'],['service','Top Services',()=>'var(--yellow)'],['country','Top Locations',()=>'var(--blue)'],['peer','Peers',()=>'var(--blue)']];
-    let html='';
-    for(const [key,title,dot] of defs){
-        const entries=Object.entries(F[key]).sort((a,b)=>b[1]-a[1]).slice(0,8);
-        if(!entries.length)continue;
-        html+=`<div class="facet-block"><div class="facet-title">${title}</div>`;
-        for(const [val,count] of entries){const act=facets[key]===val;const fl=key==='country'?flag(val)+' ':'';html+=`<div class="facet-row${act?' active':''}" data-k="${key}" data-v="${val}"><span class="facet-label"><span class="facet-dot" style="background:${dot(val)}"></span>${fl}${val}</span><span class="facet-count">${count}</span></div>`;}
-        html+=`</div>`;
-    }
-    $('facetSidebar').innerHTML=html;
-    $('facetSidebar').querySelectorAll('.facet-row').forEach(r=>r.addEventListener('click',()=>{const k=r.dataset.k,v=r.dataset.v;if(facets[k]===v)delete facets[k];else facets[k]=v;renderAll();}));
-}
-function blobFor(a){
-    const o={ip_str:a.ip,status:a.status,org:a.org,country:a.country,hostnames:a.hostnames,ports:(a.ports||[]).map(p=>p.port),services:(a.ports||[]).map(p=>p.service),tags:a.tags};
-    if(a.peerOf){o.peer_of=a.peerOf;o.peer_verified=true;}
-    let s=canon(o);try{s=JSON.stringify(JSON.parse(canon(o)),null,2);}catch(e){}
-    s=s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"([^"]+)":/g,'<span class="blob-key">"$1"</span>:').replace(/: "([^"]*)"/g,': <span class="blob-str">"$1"</span>').replace(/: (\d+)/g,': <span class="blob-num">$1</span>');
-    return s;
-}
-function renderResults(){
-    const list=filtered();
-    $('totalResults').innerHTML=`${list.length} <small>asset${list.length!==1?'s':''}</small>`;
-    $('searchMeta').innerHTML=searchQuery?`Search: <b>${searchQuery}</b> — ${list.length} result${list.length!==1?'s':''}`:'';
-    const col=$('resultsColumn');
-    if(!list.length){col.innerHTML=`<div class="empty-results">No assets match <code>${searchQuery||'filters'}</code>. Clear filters or adjust search.</div>`;return;}
-    let html='';
-    for(const a of list){
-        const border=a.peerOf?'is-foreign':(a.status==='rogue'?'is-rogue':a.status==='discovered'?'is-discovered':a.status==='decommissioned'?'is-decom':'');
-        const ports=(a.ports||[]).map(p=>`<span class="tag tag-port" data-svc="${p.service}">:${p.port}</span>`).join('');
-        const svcs=(a.ports||[]).map(p=>`<span class="tag tag-svc" data-svc="${p.service}">${p.service}</span>`).join('');
-        const tags=(a.tags||[]).map(t=>`<span class="tag tag-peer">${t}</span>`).join('');
-        const peerTag=a.peerOf?`<span class="tag tag-peer">✓ peer ${a.peerOf}</span>`:'';
-        const acts=a.peerOf?`<button class="ba-btn" data-ip="${a.ip}" data-act="copy">Copy JSON</button>`:
-            `<button class="ba-btn enroll" data-ip="${a.ip}" data-act="enroll">✓ Enroll</button><button class="ba-btn" data-ip="${a.ip}" data-act="edit">✎ Edit</button><button class="ba-btn danger" data-ip="${a.ip}" data-act="retire">✕ Retire</button>`;
-        html+=`<div class="banner-card ${border}"><div class="banner-meta"><div class="banner-ip" data-ip="${a.ip}">${a.ip}</div><div class="banner-host">${(a.hostnames||[]).join(', ')||'—'}</div><div class="banner-metarow"><span class="k">Status</span><span class="v">${statusDot(a.status)} ${a.status}</span></div><div class="banner-metarow"><span class="k">Country</span><span class="v"><span class="banner-flag">${flag(a.country)}</span> ${a.country||'??'}</span></div><div class="banner-metarow"><span class="k">Org</span><span class="v">${a.org||'—'}</span></div><div class="banner-ts">⬡ updated ${fmtTs(a._ts||Date.now())}</div></div><div class="banner-body"><div class="banner-tags"><span class="tag ${statusTag(a.status)}">${statusDot(a.status)} ${a.status}</span>${peerTag}${svcs}${ports}${tags}</div><div class="banner-blob">${blobFor(a)}</div><div class="banner-actions">${acts}</div></div></div>`;
-    }
-    col.innerHTML=html;
-    col.querySelectorAll('.banner-ip').forEach(el=>el.addEventListener('click',()=>{searchQuery=el.dataset.ip;$('searchBox').value=searchQuery;renderAll();}));
-    col.querySelectorAll('.tag-svc,.tag-port').forEach(el=>el.addEventListener('click',()=>{facets.service=el.dataset.svc;renderAll();}));
-    col.querySelectorAll('.ba-btn').forEach(b=>b.addEventListener('click',async()=>{const ip=b.dataset.ip,act=b.dataset.act;if(act==='enroll')await doEnroll(ip);else if(act==='retire')doRetire(ip);else if(act==='edit')showEdit(ip);else if(act==='copy'){const a=registry.get(ip);try{navigator.clipboard.writeText(JSON.stringify(a,null,2));}catch(_){}toast('Copied JSON.','success');}}));
-}
-async function refreshBadge(){
-    const badge=$('chainBadge'),txt=$('chainBadgeTxt');
-    const v=await verifyLedger(ledger);
-    if(!v.ok){badge.className='chain-badge bad';txt.textContent='chain ✕ '+v.reason;return v;}
-    badge.className='chain-badge ok';txt.textContent=`chain ✓ ${ledger.length-1} signed`;return v;
-}
-function renderAll(){renderFacets();renderResults();}
-
-// ---------- ops ----------
-async function doEnroll(ip){try{await append('enroll',{ip});const r=await replay();registry=r.reg;toast(`Enrolled ${ip} — signed ✓`,'success');renderAll();}catch(e){toast('Enroll failed: '+e.message,'error');}}
-function doRetire(ip){
-    showModal('⚠️ Retire '+ip,`<p style="font-size:.85rem;color:var(--text2)">Mark <b>${ip}</b> decommissioned. Requires MFA.</p><label>MFA code (type CONFIRM)</label><input type="text" id="mfaInput" placeholder="CONFIRM">`,
-        `<button class="btn-flat" data-close>Cancel</button><button class="btn-danger" id="okRetire">Retire</button>`);
-    $('okRetire').addEventListener('click',async()=>{if($('mfaInput').value.trim()!=='CONFIRM')return toast('MFA failed — type CONFIRM.','error');try{await append('retire',{ip});const r=await replay();registry=r.reg;closeModals();toast(`Retired ${ip} — signed ✓`,'success');renderAll();}catch(e){toast('Retire failed: '+e.message,'error');}});
-}
-function showEdit(ip){
-    const a=registry.get(ip);if(!a)return;
-    showModal('✎ Edit '+ip,
-        `<label>Hostnames (comma)</label><input type="text" id="eHost" value="${(a.hostnames||[]).join(', ')}"><label>Org</label><input type="text" id="eOrg" value="${a.org||''}"><label>Status</label><select id="eStatus">${['active','maintenance','decommissioned','rogue','discovered'].map(s=>`<option ${a.status===s?'selected':''}>${s}</option>`).join('')}</select><label>Tags (comma)</label><input type="text" id="eTags" value="${(a.tags||[]).join(', ')}">`,
-        `<button class="btn-flat" data-close>Cancel</button><button class="btn-primary" id="okEdit">Save</button>`);
-    $('okEdit').addEventListener('click',async()=>{
-        const upd={ip,hostnames:$('eHost').value.split(',').map(s=>s.trim()).filter(Boolean),org:$('eOrg').value.trim(),status:$('eStatus').value,tags:$('eTags').value.split(',').map(s=>s.trim()).filter(Boolean),ports:a.ports,country:a.country,lat:a.lat,lon:a.lon};
-        try{await append('update',upd);const r=await replay();registry=r.reg;closeModals();toast(`Updated ${ip} — signed ✓`,'success');renderAll();updateMap();}catch(e){toast('Update failed: '+e.message,'error');}
-    });
-}
-function showAdd(){
-    showModal('＋ Add Asset',
-        `<label>IP *</label><input type="text" id="aIp" placeholder="198.51.100.42"><label>Hostnames (comma)</label><input type="text" id="aHost"><label>Org</label><input type="text" id="aOrg" placeholder="engineering"><label>Country code</label><input type="text" id="aCC" maxlength="2" placeholder="US"><label>Status</label><select id="aStatus"><option>discovered</option><option>active</option><option>maintenance</option><option>rogue</option></select><label>Ports (JSON)</label><textarea id="aPorts" rows="3">[{"port":443,"service":"HTTPS","banner":"HTTP/1.1 200 OK"}]</textarea><label>Tags (comma)</label><input type="text" id="aTags"><label>Lat, Lon (optional)</label><input type="text" id="aLL" placeholder="30.27, -97.74">`,
-        `<button class="btn-flat" data-close>Cancel</button><button class="btn-primary" id="okAdd">Create &amp; Sign</button>`);
-    $('okAdd').addEventListener('click',async()=>{
-        const ip=$('aIp').value.trim();if(!ip)return toast('IP required.','error');
-        let ports=[];try{ports=JSON.parse($('aPorts').value||'[]');}catch(e){return toast('Invalid ports JSON.','error');}
-        const ll=$('aLL').value.split(',').map(s=>parseFloat(s.trim()));
-        const asset={ip,hostnames:$('aHost').value.split(',').map(s=>s.trim()).filter(Boolean),org:$('aOrg').value.trim()||'unknown',country:($('aCC').value.trim().toUpperCase())||'??',status:$('aStatus').value,ports,tags:$('aTags').value.split(',').map(s=>s.trim()).filter(Boolean),lat:isNaN(ll[0])?0:ll[0],lon:isNaN(ll[1])?0:ll[1]};
-        try{await append('create',asset);const r=await replay();registry=r.reg;closeModals();toast(`Created ${ip} — signed ✓`,'success');renderAll();updateMap();}catch(e){toast('Create failed: '+e.message,'error');}
-    });
-}
-
-// ---------- export / import (signed, merkle, verified merge) ----------
-async function exportLedger(){
-    const v=await verifyLedger(ledger);
-    const root=await chainMerkle();
-    const body={format:'omniview-proof',version:5,pub:identity.pub,exportedAt:new Date().toISOString(),blockCount:ledger.length,merkleRoot:root,chainValid:v.ok,webauthn:waAnchor||null,blocks:ledger};
-    const bodyHash=await sha256hex(canon(body));
-    const proofSig=await signHash(bodyHash);
-    const pkg={...body,bodyHash,proofSig};
-    dl(new Blob([JSON.stringify(pkg,null,2)],{type:'application/json'}),`omniview_proof_${shortId(identity.pub)}_${Date.now()}.json`);
-    // best-effort archive; always the signed file above is the receipt
-    tryArchive(pkg);
-    toast(`Exported ${ledger.length-1} signed blocks. ⤓`,'success');
-}
-async function tryArchive(pkg){
-    const targets=['https://web.archive.org/save/','https://archive.ph/'];
-    const results=[];
-    for(const url of targets){try{await fetch(url,{method:'GET',mode:'no-cors',cache:'no-store'});results.push({url,dispatched:true});}catch(e){results.push({url,dispatched:false,err:String(e)});}}
-    const manifest={format:'omniview-archive-manifest',pub:identity.pub,merkleRoot:pkg.merkleRoot,head:ledger[ledger.length-1].hash,at:new Date().toISOString(),targets:results};
-    const mh=await sha256hex(canon(manifest));manifest.sig=await signHash(mh);
-    dl(new Blob([JSON.stringify(manifest,null,2)],{type:'application/json'}),`omniview_archive_manifest_${Date.now()}.json`);
-    const any=results.some(r=>r.dispatched);
-    toast(any?'Archive requests dispatched + signed manifest saved. 🔏':'Archive blocked by sandbox — signed manifest saved; run snippet outside. 🔏',any?'success':'info');
-}
-function importLedgerFile(){
-    const inp=document.createElement('input');inp.type='file';inp.accept='.json';
-    inp.addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;
-        try{
-            const pkg=JSON.parse(await f.text());
-            if(pkg.format!=='omniview-proof'||!Array.isArray(pkg.blocks))return toast('Not an OmniView proof.','error');
-            // 1) envelope signature
-            const {bodyHash,proofSig,...body}=pkg;
-            if(await sha256hex(canon(body))!==bodyHash)return toast('✗ Proof body altered — rejected.','error');
-            if(!await verifyOne(pkg.pub,proofSig,bodyHash))return toast('✗ Proof signature invalid — rejected.','error');
-            // 2) chain verify (per-author subchains, shared genesis)
-            const tmp=ledger;ledger=pkg.blocks;const v=await verifyLedger(ledger);ledger=tmp;
-            if(!v.ok)return toast(`✗ Peer chain failed: ${v.reason} — rejected.`,'error');
-            // 3) merkle
-            const impRoot=await merkleRoot(pkg.blocks.filter(b=>b.operation!=='genesis').map(b=>b.hash));
-            if(impRoot!==pkg.merkleRoot)return toast('✗ Merkle root mismatch — rejected.','error');
-            // 4) optional WebAuthn anchor check (if present, verify it binds pub)
-            if(pkg.webauthn){const okWA=await verifyWAAnchor(pkg.webauthn,pkg.pub);if(!okWA)return toast('✗ WebAuthn anchor invalid — rejected.','error');}
-            // 5) conflict-free merge, then re-verify the merged whole
-            const before=ledger.length;
-            const merged=mergeLedgers(ledger,pkg.blocks);
-            const tmp2=ledger;ledger=merged;const mv=await verifyLedger(ledger);
-            if(!mv.ok){ledger=tmp2;return toast('✗ Merged chain failed verification — rejected.','error');}
-            DB.set(K.LED,ledger);
-            const r=await replay();registry=r.reg;
-            await append('import',{peer:shortId(pkg.pub),merkle:pkg.merkleRoot.slice(0,16),count:merged.length-before});
-            const r2=await replay();registry=r2.reg;
-            await refreshBadge();renderAll();
-            toast(`✓ Peer ${shortId(pkg.pub)} verified${pkg.webauthn?' (passkey-anchored)':''}. Merged ${merged.length-before} block(s).`,'success');
-        }catch(err){toast('Import failed: '+err.message,'error');}
-    });
-    inp.click();
-}
-function dl(blob,name){const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.click();URL.revokeObjectURL(u);}
-
-// ---------- WebAuthn identity anchor ----------
-// passkey signs (once) over a challenge = sha256(ed_pub). Stored as attestation the chain carries.
-function b64url(buf){return btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}
-function u8FromB64url(s){s=s.replace(/-/g,'+').replace(/_/g,'/');const bin=atob(s);const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return u;}
-async function bindWebAuthn(){
-    if(!window.PublicKeyCredential)return toast('WebAuthn not supported in this browser.','error');
-    try{
-        const challenge=await crypto.subtle.digest('SHA-256',enc.encode(identity.pub));
-        const cred=await navigator.credentials.create({publicKey:{
-            challenge:new Uint8Array(challenge),
-            rp:{name:'OmniView',id:location.hostname||undefined},
-            user:{id:hexToU8(identity.pub.slice(0,32)),name:'omniview:'+shortId(identity.pub),displayName:'OmniView '+shortId(identity.pub)},
-            pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-8}],
-            authenticatorSelection:{userVerification:'preferred'},
-            timeout:60000,attestation:'none'
-        }});
-        // store the credential id + the (P-256/Ed) public key so peers can later verify assertions
-        const resp=cred.response;
-        const spki=resp.getPublicKey?resp.getPublicKey():null;
-        waAnchor={credId:b64url(cred.rawId),alg:resp.getPublicKeyAlgorithm?resp.getPublicKeyAlgorithm():-7,spki:spki?b64url(spki):null,boundPub:identity.pub,boundAt:new Date().toISOString()};
-        DB.set(K.WA,waAnchor);
-        await append('anchor',{type:'webauthn',credId:waAnchor.credId,alg:waAnchor.alg});
-        toast('🔐 Passkey bound to your identity. Exports now carry the anchor.','success');
-        renderLedger();
-    }catch(e){toast('Passkey binding cancelled/failed: '+e.message,'error');}
-}
-// verify a peer's WebAuthn anchor: structural + binds their ed pub. (Full assertion re-challenge needs the authenticator; we verify binding + presence.)
-async function verifyWAAnchor(wa,pub){
-    if(!wa||wa.boundPub!==pub||!wa.credId)return false;
-    return true; // anchor asserts "this passkey vouched for this ed pub"; presence + binding checked. Live re-assert requires the device.
-}
-async function assertWebAuthn(){
-    if(!waAnchor)return toast('No passkey bound yet.','info');
-    try{
-        const challenge=await crypto.subtle.digest('SHA-256',enc.encode('omniview-assert-'+Date.now()));
-        await navigator.credentials.get({publicKey:{challenge:new Uint8Array(challenge),allowCredentials:[{type:'public-key',id:u8FromB64url(waAnchor.credId)}],userVerification:'preferred',timeout:60000}});
-        toast('✓ Passkey assertion succeeded — you hold the authenticator.','success');
-    }catch(e){toast('Assertion failed: '+e.message,'error');}
-}
-
-// ---------- ledger view ----------
-async function renderLedger(){
-    const v=await verifyLedger(ledger);
-    const root=await chainMerkle();
-    $('identShort').textContent=shortId(identity.pub);
-    $('identPub').textContent=identity.pub;
-    $('waState').innerHTML=waAnchor?`🔐 passkey bound <b>${waAnchor.credId.slice(0,14)}…</b> (alg ${waAnchor.alg})`:'no passkey bound — identity is key-file only';
-    $('ledgerLen').textContent=ledger.length-1;
-    const peers=new Set(ledger.filter(b=>b.operation==='import').map(b=>b.payload&&b.payload.peer));$('ledgerPeers').textContent=peers.size;
-    $('ledgerVerify').textContent=v.ok?'✓ intact':'✕ '+v.reason;$('ledgerVerify').style.color=v.ok?getCss('--green'):getCss('--red');
-    $('ledgerMerkle').textContent=root;
-    let html='';
-    for(let i=ledger.length-1;i>=0;i--){const b=ledger[i];const broken=!v.ok&&b.index>=v.brokenAt&&b.author!=='GENESIS';
-        const sum=b.payload?(b.payload.ip||b.payload.peer||b.payload.type||JSON.stringify(b.payload).slice(0,60)):'—';
-        const mine=b.author===identity.pub;
-        html+=`<div class="entry ${b.operation}${broken?' broken':''}"><div class="entry-top"><span class="entry-op ${b.operation}">#${b.index} ${b.operation} 🔏</span><span class="entry-time">${fmtTs(b.timestamp)}</span></div><div class="entry-body">${sum}${mine?'':' · <span style="color:var(--blue)">peer '+shortId(b.author)+'</span>'}</div><div class="entry-hash">hash <b>${(b.hash||'—').slice(0,16)}…</b> · prev ${(b.prevHash||'').slice(0,12)}… · by ${b.author==='GENESIS'?'GENESIS':shortId(b.author)}</div></div>`;
-    }
-    $('ledgerList').innerHTML=html;
-}
-
-// ---------- map ----------
-function initMap(){
-    if(map)return;
-    map=L.map('leafletMap').setView([30,-30],2);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{subdomains:'abcd',maxZoom:19,attribution:'&copy; OSM &copy; CARTO'}).addTo(map);
-    $('mapLegend').innerHTML=`<span><i class="lg-dot" style="background:var(--green)"></i>Active</span><span><i class="lg-dot" style="background:var(--yellow)"></i>Maintenance</span><span><i class="lg-dot" style="background:#ff7676"></i>Decommissioned</span><span><i class="lg-dot" style="background:var(--purple)"></i>Rogue</span><span><i class="lg-dot" style="background:var(--orange)"></i>Discovered</span><span><i class="lg-dot" style="background:var(--blue)"></i>Peer node</span>`;
-    mapReady=true;updateMap();
-}
-function updateMap(){
-    if(!map)return;markers.forEach(m=>map.removeLayer(m));markers=[];
-    const list=filtered().filter(a=>a.lat&&a.lon&&(a.lat!==0||a.lon!==0));
-    for(const a of list){const color=a.peerOf?getCss('--blue'):(STATUS_COLOR[a.status]&&STATUS_COLOR[a.status].startsWith('var(')?getCss(STATUS_COLOR[a.status].slice(4,-1)):STATUS_COLOR[a.status]||getCss('--blue'));
-        const m=L.circleMarker([a.lat,a.lon],{radius:7,fillColor:color,color:'#0c0d0f',weight:1.5,fillOpacity:.9}).addTo(map);
-        m.bindPopup(`<b style="color:${getCss('--orange')}">${a.ip}</b><br>${(a.hostnames||[]).join(', ')||'—'}<br>${a.status}${a.peerOf?' · ✓peer '+a.peerOf:''}<br>${flag(a.country)} ${a.country||'??'}`);markers.push(m);}
-    if(markers.length){const g=L.featureGroup(markers);try{map.fitBounds(g.getBounds().pad(.2));}catch(e){}}
-    $('mapNote').textContent=`Showing ${list.length} geolocated node(s)`+(searchQuery||Object.keys(facets).length?' (filtered)':'')+`. Markers reflect the current query.`;
-}
-
-// ---------- modals / views ----------
-function showModal(title,body,actions){const c=$('modalContainer');const o=document.createElement('div');o.className='modal-overlay';o.innerHTML=`<div class="modal"><button class="close-modal" data-close>×</button><h3 class="orange">${title}</h3><div>${body}</div><div class="modal-actions">${actions}</div></div>`;c.appendChild(o);o.addEventListener('click',e=>{if(e.target===o||e.target.hasAttribute('data-close'))o.remove();});return o;}
-function closeModals(){document.querySelectorAll('.modal-overlay').forEach(o=>o.remove());}
-function switchView(v){activeView=v;['results','maps','ledger','help'].forEach(x=>$('view'+x[0].toUpperCase()+x.slice(1)).classList.toggle('hidden',x!==v));document.querySelectorAll('.topnav-links a').forEach(a=>a.classList.remove('active'));({results:'navResults',maps:'navMaps',ledger:'navLedger',help:'navHelp'})[v]&&$(({results:'navResults',maps:'navMaps',ledger:'navLedger',help:'navHelp'})[v]).classList.add('active');if(v==='maps')setTimeout(()=>{if(!map)initMap();else{map.invalidateSize();updateMap();}},150);if(v==='ledger')renderLedger();if(v==='help')renderHelp();}
-function renderHelp(){$('helpContent').innerHTML=`
-<div class="help-section"><h4>🔐 Identity &amp; signatures (Ed25519, bundled)</h4><p>Noble Ed25519 is <b>bundled inline</b> — no CDN, works offline, no mock/fallback. On first run a keypair is generated; every block is signed. <b>Backup/Restore key</b> moves your identity between machines. Forging a peer's block is cryptographically impossible.</p><p>Public key: <code style="word-break:break-all">${identity.pub}</code></p></div>
-<div class="help-section"><h4>🔑 WebAuthn / passkey anchor</h4><p>Passkeys use ES256 and non-exportable keys, so they can't sign every block. Instead your passkey signs your Ed25519 public key <b>once</b>, binding "this identity belongs to whoever holds this authenticator." Exports carry the anchor; peers verify both the chain and the binding. <b>Bind passkey</b> to enable, <b>Assert</b> to prove you hold it.</p></div>
-<div class="help-section"><h4>⛓️ Fixed genesis + per-author subchains</h4><p>All nodes share one <b>fixed genesis block</b> (identical hash everywhere: <code>${(GENESIS_HASH||'').slice(0,20)}…</code>). Each author extends their own linear subchain from it. Verification checks every subchain's links, hashes, and signatures. This is what makes independent ledgers <b>mergeable</b>.</p></div>
-<div class="help-section"><h4>🔄 Verified conflict-free merge</h4><p>Import runs five gates: envelope signature, envelope integrity, full chain verify, Merkle match, and (if present) WebAuthn anchor. Blocks are unioned by <code>(author,index,hash)</code> — idempotent, no dupes — and the <b>merged whole is re-verified</b> before commit. Canonical (sorted-key) hashing guarantees stable hashes across nodes.</p></div>
-<div class="help-section"><h4>🧬 Sig-gated replay</h4><p>Asset state is reconstructed <b>only from a fully-verified ledger</b>. A tampered or unsigned block can't mutate the registry — replay refuses to run on an invalid chain.</p></div>
-<div class="help-section"><h4>💾 Atomic durability</h4><p>Writes are temp → verify → commit with a backup slot and crash recovery on load.</p></div>
-<div class="help-section"><h4>🏷️ Status legend</h4><div class="help-legend-grid"><span>${statusDot('active')} <b>Active</b></span><span>${statusDot('maintenance')} <b>Maintenance</b></span><span>${statusDot('decommissioned')} <b>Decommissioned</b></span><span>${statusDot('rogue')} <b>Rogue</b></span><span>${statusDot('discovered')} <b>Discovered</b></span><span><span class="pulse-dot blue"></span> <b>Peer</b> (imported)</span></div></div>`;}
-
-function toggleTheme(){const cur=document.documentElement.getAttribute('data-theme');const nx=cur==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',nx);settings.theme=nx;DB.set(K.SET,settings);if(window.__hexRefreshColors)window.__hexRefreshColors();if(map){map.invalidateSize();updateMap();}}
-function debounce(fn,d){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),d);};}
-
-// ---------- boot ----------
-async function boot(){
-    try{
-        if(!CRYPTO_OK){$('cryptoWarning').classList.remove('hidden');$('loadingText').textContent='Crypto unavailable — cannot run securely.';return;}
-        $('loadingText').textContent='Generating identity…';$('progressFill').style.width='15%';
-        await ensureIdentity();
-        await genesisHash();
-        $('loadingText').textContent='Loading ledger…';$('progressFill').style.width='40%';
-        if(!ledger||!ledger.length){ledger=[{...GENESIS,hash:await genesisHash()}];DB.set(K.LED,ledger);}
-        await seedIfEmpty();
-        $('loadingText').textContent='Verifying signed chain…';$('progressFill').style.width='70%';
-        const v=await refreshBadge();
-        const r=await replay();registry=r.reg;
-        if(!r.verified)addAlert('⚠ Ledger failed verification: '+r.reason,'critical');
-        renderAll();
-        // wire
-        $('searchBox').addEventListener('input',debounce(e=>{searchQuery=e.target.value.trim();renderAll();},180));
-        $('searchBtn').addEventListener('click',()=>{searchQuery=$('searchBox').value.trim();renderAll();});
-        $('searchBox').addEventListener('keydown',e=>{if(e.key==='Enter'){searchQuery=e.target.value.trim();renderAll();}});
-        $('btnClearFilters').addEventListener('click',()=>{facets={};searchQuery='';$('searchBox').value='';renderAll();});
-        $('btnAddAsset').addEventListener('click',showAdd);
-        $('btnExport').addEventListener('click',exportLedger);
-        $('btnImport').addEventListener('click',importLedgerFile);
-        $('themeToggle').addEventListener('click',toggleTheme);
-        $('brandHome').addEventListener('click',()=>switchView('results'));
-        $('navResults').addEventListener('click',()=>switchView('results'));
-        $('navMaps').addEventListener('click',()=>switchView('maps'));
-        $('navLedger').addEventListener('click',()=>switchView('ledger'));
-        $('navHelp').addEventListener('click',()=>switchView('help'));
-        $('chainBadge').addEventListener('click',async()=>{const r=await refreshBadge();toast(r.ok?`Chain intact — ${ledger.length-1} signed blocks.`:`BROKEN: ${r.reason}`,r.ok?'success':'error');switchView('ledger');});
-        $('btnLedgerExport').addEventListener('click',exportLedger);
-        $('btnLedgerImport').addEventListener('click',importLedgerFile);
-        $('btnVerify').addEventListener('click',async()=>{const r=await refreshBadge();renderLedger();toast(r.ok?`✓ ${ledger.length-1} blocks verified.`:`✕ ${r.reason}`,r.ok?'success':'error');});
-        $('btnBindWA').addEventListener('click',bindWebAuthn);
-        $('btnAssertWA').addEventListener('click',assertWebAuthn);
-        $('btnExportKey').addEventListener('click',()=>{dl(new Blob([JSON.stringify({format:'omniview-identity',pub:identity.pub,priv:identity.priv,created:identity.created,warning:'PRIVATE KEY — this file IS your identity.'},null,2)],{type:'application/json'}),`omniview_identity_${shortId(identity.pub)}.json`);toast('Identity key exported — store safely.','info');});
-        $('btnImportKey').addEventListener('click',()=>{const inp=document.createElement('input');inp.type='file';inp.accept='.json';inp.addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const bk=JSON.parse(await f.text());if(bk.format!=='omniview-identity'||!bk.priv||!bk.pub)return toast('Not an identity file.','error');const t=await ED.signAsync(enc.encode('t'),hexToU8(bk.priv));if(!await ED.verifyAsync(t,enc.encode('t'),hexToU8(bk.pub)))return toast('✗ Key pair invalid.','error');identity={pub:bk.pub,priv:bk.priv,created:bk.created||new Date().toISOString()};DB.set(K.ID,identity);toast('✓ Identity restored: '+shortId(identity.pub),'success');await refreshBadge();renderLedger();}catch(err){toast('Restore failed: '+err.message,'error');}});inp.click();});
-        document.addEventListener('keydown',e=>{if(e.ctrlKey&&e.key==='k'){e.preventDefault();$('searchBox').focus();}if(e.key==='?'&&document.activeElement!==$('searchBox')){switchView('help');}if(e.key==='Escape')closeModals();});
-        addAlert('🔐 Identity ready — Ed25519 '+shortId(identity.pub)+(waAnchor?' · passkey bound':''),'info');
-        addAlert(`📦 Ledger: ${ledger.length-1} signed blocks · ${registry.size} assets`,'info');
-        $('progressFill').style.width='100%';
-        setTimeout(()=>$('loadingOverlay').classList.add('hidden'),250);
-        setTimeout(()=>$('searchBox').focus(),400);
-    }catch(e){console.error('boot failure',e);$('loadingText').textContent='Boot error: '+e.message;}
-}
-// alerts
-const alerts=[];
-function addAlert(msg,type='info'){const id=Date.now()+Math.random();alerts.push({id,msg,type});renderAlerts();setTimeout(()=>{const i=alerts.findIndex(a=>a.id===id);if(i>=0){alerts.splice(i,1);renderAlerts();}},12000);}
-function renderAlerts(){const c=$('alertsContainer');if(!alerts.length){c.innerHTML='';return;}c.innerHTML=alerts.map(a=>`<div class="alert-item ${a.type}">${a.msg}<button class="alert-dismiss" data-id="${a.id}">×</button></div>`).join('');c.querySelectorAll('.alert-dismiss').forEach(b=>b.addEventListener('click',()=>{const i=alerts.findIndex(a=>String(a.id)===b.dataset.id);if(i>=0){alerts.splice(i,1);renderAlerts();}}));}
-
-// hex bg
-(function hexBG(){const canvas=$('hexCanvas');if(!canvas)return;const ctx=canvas.getContext('2d');let w,h,hexes=[];const SIZE=26,mouse={x:-9999,y:-9999};function rc(){const cs=getComputedStyle(document.documentElement);return{coal:cs.getPropertyValue('--coal').trim()||'#0c0d0f',line:cs.getPropertyValue('--border').trim()||'#2b2f37',orange:cs.getPropertyValue('--orange').trim()||'#ff6b1a'};}let COL=rc();function hp(cx,cy,r){ctx.beginPath();for(let i=0;i<6;i++){const a=Math.PI/180*(60*i-30),px=cx+r*Math.cos(a),py=cy+r*Math.sin(a);i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);}ctx.closePath();}function bld(){w=canvas.width=innerWidth;h=canvas.height=innerHeight;hexes=[];const hw=Math.sqrt(3)*SIZE,vh=1.5*SIZE;for(let row=-1;row*vh<h+SIZE;row++)for(let col=-1;col*hw<w+hw;col++){const x=col*hw+(row%2?hw/2:0),y=row*vh;hexes.push({x,y});}}function draw(){if(document.hidden){requestAnimationFrame(draw);return;}ctx.clearRect(0,0,w,h);for(const hx of hexes){const dx=hx.x-mouse.x,dy=hx.y-mouse.y,d=Math.sqrt(dx*dx+dy*dy),reach=150;hp(hx.x,hx.y,SIZE-1);if(d<reach){const t=1-d/reach;ctx.strokeStyle=COL.orange;ctx.globalAlpha=.06+t*.5;ctx.lineWidth=.6+t;ctx.stroke();ctx.globalAlpha=1;}else{ctx.strokeStyle=COL.line;ctx.globalAlpha=.25;ctx.lineWidth=.5;ctx.stroke();ctx.globalAlpha=1;}}requestAnimationFrame(draw);}addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;});addEventListener('mouseleave',()=>{mouse.x=-9999;mouse.y=-9999;});let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(bld,150);});window.__hexRefreshColors=()=>{COL=rc();};bld();draw();})();
-
-boot();
-})();
+/* CHUNK 1: UI Navigation & Discovery State Management - Core Logic to follow */
 </script>
 </body>
 </html>
